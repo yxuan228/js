@@ -1,0 +1,165 @@
+{
+  "frames": [
+    {
+      "filename": "monster_back",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 50,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 1,
+        "w": 50,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "monster_walk01",
+      "frame": {
+        "x": 0,
+        "y": 63,
+        "w": 50,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 1,
+        "w": 50,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "monster_front",
+      "frame": {
+        "x": 0,
+        "y": 126,
+        "w": 49,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 1,
+        "w": 49,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "monster_walk03",
+      "frame": {
+        "x": 0,
+        "y": 189,
+        "w": 49,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 1,
+        "w": 49,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "monster_walk02",
+      "frame": {
+        "x": 0,
+        "y": 252,
+        "w": 48,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 1,
+        "w": 48,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "monster_walk04",
+      "frame": {
+        "x": 0,
+        "y": 315,
+        "w": 48,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 1,
+        "w": 48,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "character.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 50,
+      "h": 378
+    },
+    "scale": 1
+  }
+}
