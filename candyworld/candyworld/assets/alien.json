@@ -1,0 +1,115 @@
+{
+  "frames": [
+    {
+      "filename": "alien_01",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 1,
+        "w": 46,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "alien_02",
+      "frame": {
+        "x": 0,
+        "y": 63,
+        "w": 46,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 1,
+        "w": 46,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "alien_03",
+      "frame": {
+        "x": 0,
+        "y": 126,
+        "w": 46,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 1,
+        "w": 46,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "alien_04",
+      "frame": {
+        "x": 0,
+        "y": 189,
+        "w": 45,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 1,
+        "w": 45,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "alien.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 46,
+      "h": 252
+    },
+    "scale": 1
+  }
+}
