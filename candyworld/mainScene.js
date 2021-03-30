@@ -24,8 +24,8 @@ class mainScene extends Phaser.Scene {
         var key2 = this.input.keyboard.addKey(50);
         var key3 = this.input.keyboard.addKey(51);
         var key4 = this.input.keyboard.addKey(52);
-        var key5 = this.input.keyboard.addKey(53);
-        var key6 = this.input.keyboard.addKey(54);
+        // var key5 = this.input.keyboard.addKey(53);
+        // var key6 = this.input.keyboard.addKey(54);
 
 
         key1.on('down', function(){
@@ -38,10 +38,10 @@ class mainScene extends Phaser.Scene {
             this.scene.start("level2");
             }, this );
 
-        // key3.on('down', function(){
-        //     this.scene.stop("mainScene");
-        //     this.scene.start("level3");
-        //     }, this ); 
+        key3.on('down', function(){
+            this.scene.stop("mainScene");
+            this.scene.start("level3");
+            }, this ); 
             
         // key4.on('down', function(){
         //     this.scene.stop("mainScene");

@@ -4,7 +4,8 @@ class level2 extends Phaser.Scene {
     constructor ()
     {
         super({ key: 'level2' });
-
+        this.candy = 0
+        this.liveCount = 3
 
     }
 
@@ -19,7 +20,7 @@ preload() {
 
     this.load.image('heart','assets/heart.png' );
 
-    // this.load.atlas('enemy','assets/alien.png', 'assets/alien.json' );
+    this.load.atlas('enemy','assets/alien.png', 'assets/alien.json' );
 
     // this.load.atlas('robot', 'assets/robot.png', 'assets/robot.json');  
 
@@ -39,18 +40,9 @@ create() {
     this.exitLayer = this.map2.createDynamicLayer('exitLayer', Tiles2, 0, 0);
     this.candyLayer = this.map2.createDynamicLayer('candyLayer', Tiles2, 0, 0);
 
-    // // alien position
-    // this.alien = map2.findObject("objectLayer", obj => obj.name === "alien");
-
-    // // Set starting and ending position using name
-    // this.startPoint = this.map.findObject('exitobject', obj => obj.name === 'startPoint');
-    // this.endPoint = this.map.findObject('exitobject', obj => obj.name === 'endPoint');
-
-    // this.player = this.physics.add.sprite(this.startPoint.x, this.startPoint.y, 'player');
-    // this.player.setScale(1);
-    //     this.player.setCollideWorldBounds(true);
-
-    //     window.player = this.player
+    // Set starting and ending position using name
+    this.startPoint = this.map2.findObject('exitobject', obj => obj.name === 'startPoint');
+    this.endPoint = this.map2.findObject('exitobject', obj => obj.name === 'endPoint');
 
     console.log( this.pillarsLayer.width, this.pillarsLayer.height );
 
@@ -79,32 +71,41 @@ create() {
 
     this.heart1 = this.add.image(50,530, 'heart').setScrollFactor(0);
     this.heart2 = this.add.image(110,530,'heart').setScrollFactor(0);
-    this.Heart3 = this.add.image(170,530,'heart').setScrollFactor(0);
+    this.heart3 = this.add.image(170,530,'heart').setScrollFactor(0);
 
-//     // create cat animation
-// this.anims.create({
-//     key:'alien_eye',
-//     frames:[
-//         {key: 'alien', frame: 'alien_01'},
-//         {key: 'alien', frame: 'alien_02'},
-//         {key: 'alien', frame: 'alien_03'},
-//         {key: 'alien', frame: 'alien_04'},
+    // create cat animation
+this.anims.create({
+    key:'alien_eye',
+    frames:[
+        {key: 'enemy', frame: 'alien_01'},
+        {key: 'enemy', frame: 'alien_02'},
+        {key: 'enemy', frame: 'alien_03'},
+        {key: 'enemy', frame: 'alien_04'},
        
-//     ],
+    ],
     
-// frameRate:10,
-// repeat: -1
-// });
+frameRate:10,
+repeat: -1
+});
 
-// this.time.addEvent({ delay: 1000, callback: this.moveRightLeft1, callbackScope: this, loop: false });
-// this.time.addEvent({ delay: 1000, callback: this.moveRightLeft2, callbackScope: this, loop: false });
+this.time.addEvent({ delay: 1000, callback: this.moveRightLeft1, callbackScope: this, loop: false });
+this.time.addEvent({ delay: 1000, callback: this.moveRightLeft2, callbackScope: this, loop: false });
 
-// this.alien1 = this.physics.add.sprite(550, 350, 'alien').setScale(0.8).play('alien_eye');
-// this.alien2 = this.physics.add.sprite(550, 480, 'alien').setScale(0.8).play('alien_eye');
+this.alien1 = this.physics.add.sprite(350, 350, 'enemy').setScale(0.8).play('alien_eye');
+this.alien2 = this.physics.add.sprite(1000, 200, 'enemy').setScale(0.8).play('alien_eye');
+this.alien3 = this.physics.add.sprite(1250, 800, 'enemy').setScale(0.8).play('alien_eye');
+this.alien4 = this.physics.add.sprite(1850, 1000, 'enemy').setScale(0.8).play('alien_eye');
 
-// //overlap cat
-// this.physics.add.overlap(this.player, this.alien1, this.hitalien, null, this );
-// this.physics.add.overlap(this.player, this.alien2, this.hitalien, null, this );
+//overlap cat
+this.physics.add.overlap(this.player, this.alien1, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien2, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien3, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien4, this.hitalien, null, this );
+
+this.physics.add.collider(this.pillarsLayer, this.alien1);
+this.physics.add.collider(this.pillarsLayer, this.alien2);
+this.physics.add.collider(this.pillarsLayer, this.alien3);
+this.physics.add.collider(this.pillarsLayer, this.alien4);
 
 
     
@@ -145,25 +146,6 @@ create() {
         repeat: -1
     });
 
-    // // alien movement
-    // moveRightLeft1() {
-    //     console.log('moveleft')
-    //     this.tweens.timeline({
-    //        targets: this.cat1,
-    //        loop: -1, // loop forever
-    //        ease: 'Linear',
-    //        duration: 2000,
-    //         tweens: [
-    //        {
-    //           x: 900,
-    //        },
-    //         {
-    //           x: 550,
-    //        },
-    //      ]
-    //      });
-    //     }
-
     
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -186,12 +168,7 @@ create() {
 //     this.candyLayer.removeTileAt(tile.x, tile.y); // remove the item
 //     return false;
 //     }
-    collectcandy(player,tile) {
-        this.candy++;
-        console.log('Collect Candy', this.candy);
-        this.candyLayer.removeTileAt(tile.x, tile.y);
-        return false;
-    }
+   
 
 update() {
 
@@ -219,52 +196,74 @@ update() {
         this.player.anims.play('front', true);    
     }
 
-    // // Check for reaching endPoint object
-    // if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 1 ) {
-    //     console.log('Reached endPoint, loading next level');
-    //     this.scene.stop("level1");
-    //     this.scene.start("level2");
-    // }
-
-    
-
-    // // Check for reaching endPoint object
-    // if ( this.player.x >= 2210 && this.player.y >= 40 && this.candy > 1 ) {
-    //     console.log('Reached End, level1');
-    //     // window.music1.stop();
-    //     //this.cameras.main.shake(500);
-    //     this.time.delayedCall(1000,function() {
-    //      this.scene.start("level2");
-    //     },[], this);
-    //     }
-
-    if ( this.liveCount === 2) {
-        this.heart3.setVisible(true);
-    } else if ( this.liveCount === 2) {
-        this.heart2.setVisible(true);
-    } else if ( this.liveCount === 0) {
-        this.heart1.setVisible(true);
+    // Check for reaching endPoint object
+    if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 7 ) {
+        console.log('Reached endPoint, loading next level');
+        this.scene.stop("level2");
+        this.scene.start("level3");
     }
-
-    // hitalien(player, sprite){
-    //     console.log("hitalien");
-           
-    //     sprite.disableBody (true, true);
-    //     // this.bgmusicSnd.loop = false
-    //     // this.bgmusicSnd.stop();
-    //     // this.hitSnd.play();
-    //     this.time.delayedCall(500,function() {
-    //     this.meatCount = 0
-    //     this.scene.start('faillevel2');
-    //     },[], this);
-        
-           
-    //     return false;
-    //     }
-
 
     
 }
 
 
+// hitalien(player, sprite){
+//     console.log("hitalien");
+       
+//     sprite.disableBody (true, true);
+//     // this.bgmusicSnd.loop = false
+//     // this.bgmusicSnd.stop();
+//     // this.hitSnd.play();
+//     this.time.delayedCall(500,function() {
+//     this.meatCount = 0
+//     this.scene.start('faillevel2');
+//     },[], this);
+    
+       
+//     return false;
+//     }
+
+collectcandy(player,tile) {
+    this.candy++;
+    console.log('Collect Candy', this.candy);
+    this.candyLayer.removeTileAt(tile.x, tile.y);
+    return false;
+}
+    
+    hitalien(player, sprite) {
+        //bombs.disableBody(true, true);
+        sprite.disableBody(true, true);
+        this.liveCount -= 1;
+        console.log('Hit alien, deduct heart, balance is',this.liveCount);
+    
+        // Default is 3 lives
+        if ( this.liveCount === 2) {
+            // this.explodeSnd.play();
+            this.cameras.main.shake(100);
+            this.heart3.setVisible(false);
+        } else if ( this.liveCount === 1) {
+            // this.explodeSnd.play();
+            this.cameras.main.shake(100);
+            this.heart2.setVisible(false);
+        } else if ( this.liveCount === 0) {
+            // this.explodeSnd.play();
+            this.cameras.main.shake(500);
+            this.heart1.setVisible(false);
+            this.isDead = true;
+        }
+    
+        // No more lives, shake screen and restart the game
+        if ( this.isDead ) {
+        console.log("Player is dead!!!")
+        // delay 1 sec
+        this.time.delayedCall(2000,function() {
+            // Reset counter before a restart
+            this.isDead = false;
+            this.liveCount = 3;
+            this.scene.restart();
+        },[], this);
+        }
+    
+    }
+    
 }

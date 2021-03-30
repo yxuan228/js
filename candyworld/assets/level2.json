@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"level2.json"
+         "target":"..\/..\/CandyWorld\/assets\/level2.json"
         }
     },
  "height":20,
@@ -79,9 +79,44 @@
          "width":40,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":6,
+         "name":"exitobject",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"startPoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":92.3076923076923,
+                 "y":546.153846153846
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"endPoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2338.46153846154,
+                 "y":34.6153846153846
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":1,
+ "nextlayerid":7,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"2021.02.15",
@@ -90,7 +125,7 @@
         {
          "columns":5,
          "firstgid":1,
-         "image":"tiles2.png",
+         "image":"..\/..\/CandyWorld\/assets\/tiles2.png",
          "imageheight":256,
          "imagewidth":320,
          "margin":0,

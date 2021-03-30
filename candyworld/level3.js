@@ -1,142 +1,160 @@
-// moving enemies
+// static enemies
 class level3 extends Phaser.Scene {
 
     constructor ()
     {
         super({ key: 'level3' });
-        this.starCount = 0;
+        this.candy = 0
+        this.liveCount = 3
 
     }
 
 preload() {
 
     // map made with Tiled in JSON format
-    this.load.tilemapTiledJSON('map2', 'assets/level2.json');
+    this.load.tilemapTiledJSON('map3', 'assets/level3.json');
     
-    this.load.spritesheet('tiles', 'assets/tiles64x64.png', {frameWidth: 64, frameHeight: 64});
+    this.load.spritesheet('tiles3', 'assets/tiles3.png', {frameWidth: 64, frameHeight: 64});
 
-    //this.load.image('goldCoin', 'assets/goldCoin.png');
+    this.load.atlas('player','assets/character.png', 'assets/character.json' );
 
-    //this.load.atlas('player', 'assets/this.player.png', 'assets/this.player.json');
-    this.load.spritesheet('player','assets/dude2.png', { frameWidth: 64, frameHeight: 96} );
+    this.load.image('heart','assets/heart.png' );
 
-
-    this.load.image('star', 'assets/star.png');
-    this.load.image('bomb', 'assets/bomb.png');
+    this.load.atlas('enemy','assets/alien.png', 'assets/alien.json' ); 
 
 }
 
 create() {
 
-
-    this.map2 = this.make.tilemap({key: 'map2'});
+    this.map3 = this.make.tilemap({key: 'map3'});
     
     // Must match tileSets name
-   // var coinTiles = map.addTilesetImage('goldCoin');
-
-    // Must match tileSets name
-    this.Tiles = this.map2.addTilesetImage('tiles64x64','tiles');
+    let Tiles3 = this.map3.addTilesetImage('tiles3', 'tiles3');
 
     // create the ground layer
-    this.groundLayer = this.map2.createDynamicLayer('groundLayer', this.Tiles, 0, 0);
-    this.platformLayer = this.map2.createDynamicLayer('platformLayer', this.Tiles, 0, 0);
+    this.backgroundLayer = this.map3.createDynamicLayer('backgroundLayer', Tiles3, 0, 0);
+    this.pillarsLayer = this.map3.createDynamicLayer('pillarsLayer', Tiles3, 0, 0);
+    this.obstaclesLayer = this.map3.createDynamicLayer('obstaclesLayer', Tiles3, 0, 0);
+    this.exitLayer = this.map3.createDynamicLayer('exitLayer', Tiles3, 0, 0);
+    this.candyLayer = this.map3.createDynamicLayer('candyLayer', Tiles3, 0, 0);
 
-    // Set starting and ending position using name
-    this.startPoint3 = this.map2.findObject("ObjectLayer", obj => obj.name === "startPoint");
-    this.endPoint3 = this.map2.findObject("ObjectLayer", obj => obj.name === "endPoint");
+    // // Set starting and ending position using name
+    // this.startPoint = this.map3.findObject('exitobject', obj => obj.name === 'startPoint');
+    // this.endPoint = this.map3.findObject('exitobject', obj => obj.name === 'endPoint');
 
-    // console.log('startPoint ', this.startPoint.x, this.startPoint.y);
-    // console.log('endPoint ', this.endPoint.x, this.endPoint.y);
-    
-    // add coins as tiles
-    //coinLayer = map.createDynamicLayer('coinLayer', coinTiles, 0, 0);
+    console.log( this.pillarsLayer.width, this.pillarsLayer.height );
 
     // create the player sprite    
     this.player = this.physics.add.sprite(200, 200, 'player');
     this.player.setBounce(0.1); // our this.player will bounce from items
     
     // small fix to our this.player images, we resize the physics body object slightly
-    this.player.body.setSize(this.player.width, this.player.height);
     this.player.setCollideWorldBounds(true); // don't go out of the map  
 
     // Set this.player to starting position
+    //this.player.setPosition(this.startPoint.x, this.startPoint.y);  
     this.player.setPosition(0, 0);  
 
-    console.log('player ', this.player.x, this.player.y);
-
     // set the boundaries of our game world
-    this.physics.world.bounds.width = this.groundLayer.width;
-    this.physics.world.bounds.height = this.groundLayer.height;
+    this.physics.world.bounds.width = this.pillarsLayer.width;
+    this.physics.world.bounds.height = this.pillarsLayer.height;
 
     // the this.player will collide with this layer
-    this.groundLayer.setCollisionByProperty({ collides: true });
-    this.platformLayer.setCollisionByProperty({ collides: true });
+    this.pillarsLayer.setCollisionByProperty({ pillars: true });
+    this.obstaclesLayer.setCollisionByProperty({ obstacles: true });
     
-    this.physics.add.collider(this.groundLayer, this.player);
-    this.physics.add.collider(this.platformLayer, this.player);
+    this.physics.add.collider(this.pillarsLayer, this.player);
+    this.physics.add.collider(this.obstaclesLayer, this.player);
+    this.physics.add.collider(this.candyLayer, this.player);
 
-     // Add random bomb
-     this.bombs = this.physics.add.group({
-        key: 'bomb',
-        repeat: 5,
-        setXY: { x: 400, y: 0, stepX: Phaser.Math.Between(300, 300) }
-    });
+    this.heart1 = this.add.image(50,530, 'heart').setScrollFactor(0);
+    this.heart2 = this.add.image(110,530,'heart').setScrollFactor(0);
+    this.heart3 = this.add.image(170,530,'heart').setScrollFactor(0);
 
-    this.timedEvent = this.time.addEvent({ delay: 2000, callback: this.moveLeft, callbackScope: this, loop: true });
-    this.timedEvent2 = this.time.addEvent({ delay: 4000, callback: this.moveRight, callbackScope: this, loop: true });
+    // create cat animation
+this.anims.create({
+    key:'alien_eye',
+    frames:[
+        {key: 'enemy', frame: 'alien_01'},
+        {key: 'enemy', frame: 'alien_02'},
+        {key: 'enemy', frame: 'alien_03'},
+        {key: 'enemy', frame: 'alien_04'},
        
+    ],
+    
+frameRate:10,
+repeat: -1
+});
 
-    // Collide platform with stars
-    this.physics.add.collider(this.platformLayer, this.bombs);
-    this.physics.add.collider(this.groundLayer, this.bombs);
+this.time.addEvent({ delay: 1000, callback: this.moveRightLeft1, callbackScope: this, loop: false });
+this.time.addEvent({ delay: 1000, callback: this.moveRightLeft2, callbackScope: this, loop: false });
 
-    this.physics.add.overlap(this.player, this.bombs, this.hitBombs, null, this );
+this.alien1 = this.physics.add.sprite(550, 350, 'enemy').setScale(0.8).play('alien_eye');
+this.alien2 = this.physics.add.sprite(900, 800, 'enemy').setScale(0.8).play('alien_eye');
+this.alien3 = this.physics.add.sprite(1250, 800, 'enemy').setScale(0.8).play('alien_eye');
+this.alien4 = this.physics.add.sprite(1950, 1000, 'enemy').setScale(0.8).play('alien_eye');
+this.alien5 = this.physics.add.sprite(1600, 800, 'enemy').setScale(0.8).play('alien_eye');
+this.alien6 = this.physics.add.sprite(2350, 100, 'enemy').setScale(0.8).play('alien_eye');
 
-    this.add.text(0,560, 'Level 3 - moving bombs', { font: '24px Courier', fill: '#000000' }).setScrollFactor(0);
+//overlap cat
+this.physics.add.overlap(this.player, this.alien1, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien2, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien3, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien4, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien5, this.hitalien, null, this );
+this.physics.add.overlap(this.player, this.alien6, this.hitalien, null, this );
 
-    // this text will show the score
-    this.starText = this.add.text(20, 40, '0', {
-        fontSize: '20px',
-        fill: '#ffffff'
-    });
-    // fix the text to the camera
-    this.starText.setScrollFactor(0);
-    this.starText.visible = true;
+this.physics.add.collider(this.pillarsLayer, this.alien1);
+this.physics.add.collider(this.pillarsLayer, this.alien2);
+this.physics.add.collider(this.pillarsLayer, this.alien3);
+this.physics.add.collider(this.pillarsLayer, this.alien4);
+this.physics.add.collider(this.pillarsLayer, this.alien5);
+this.physics.add.collider(this.pillarsLayer, this.alien6);
+
+    
+
+
+    //   collect candy
+    this.candyLayer.setTileIndexCallback(12, this.collectcandy, this);
+
 
     this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('player', {
-            start: 0,
-            end: 3
-        }),
-        frameRate: 10,
+        key:'left',
+        frames:[
+            {key:'player',frame:'monster_walk01'},
+            {key:'player',frame:'monster_walk02'},
+            {key:'player',frame:'monster_walk03'},
+            {key:'player',frame:'monster_walk04'},
+        ],
+        frameRate:10,
         repeat: -1
     });
 
     this.anims.create({
-        key: 'idle',
-        frames: [{
-            key: 'player',
-            frame: 4
-        }],
-        frameRate: 20,
-        repeat: false
+        key:'front',
+        frames:[
+            {key:'player',frame:'monster_front'},
+        
+        ],
+        frameRate:10,
+        repeat: -1
     });
 
     this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('player', {
-            start: 5,
-            end: 8
-        }),
-        frameRate: 10,
+        key:'back',
+        frames:[
+            {key:'player',frame:'monster_back'},
+        ],
+        frameRate:10,
         repeat: -1
     });
+
+    
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
   // set bounds so the camera won't go outside the game world
-  this.cameras.main.setBounds(0, 0, this.map2.widthInPixels, this.map2.heightInPixels);
+  this.cameras.main.setBounds(0, 0, this.map3.widthInPixels, this.map3.heightInPixels);
   // make the camera follow the this.player
   this.cameras.main.startFollow(this.player);
 
@@ -145,87 +163,110 @@ create() {
 
 }
 
-collectStars(player, stars) {
-    stars.disableBody(true, true);
-    this.starCount += 1; // add 10 points to the score
-    console.log(this.starCount);
-    //this.starText.setText(starCount); // set the text to show the current score
-    return false;
-}
 
-hitBombs(player,bombs) {
-    //bombs.disableBody(true, true);
-    console.log('Hit bomb, restart game');
-    this.cameras.main.shake(500);
-    // delay 1 sec
-    this.time.delayedCall(2000,function() {
-
-        this.scene.restart();
-//        this.scene.start("gameoverScene");
-    },[], this);
-}
-
-removeBombs(bombs,stars) {
-    bombs.disableBody(true, true);
-}
-
-moveLeft(bombs) {
-    this.tweens.add({
-        targets: this.bombs.getChildren().map(function (c) { return c.body.velocity }),
-        x: Phaser.Math.Between(-150, -50) ,
-        ease: 'Sine.easeInOut',
-        yoyo: true,
-        repeat: false
-    });
-}
-moveRight(bombs) {
-    this.tweens.add({
-        targets: this.bombs.getChildren().map(function (c) { return c.body.velocity }),
-        x:  Phaser.Math.Between(50, 150),
-        ease: 'Sine.easeInOut',
-        yoyo: true,
-        repeat: false
-    });
-}
-
-
+      
+// remove candy
+// collectcandy(player, Tiles) {
+//     console.log('candy', Tiles.index );
+//     this.candyLayer.removeTileAt(tile.x, tile.y); // remove the item
+//     return false;
+//     }
+   
 
 update() {
 
+
+
     if (this.cursors.left.isDown)
     {
-        this.player.body.setVelocityX(-200);
+        this.player.body.setVelocityX(-300);
         this.player.anims.play('left', true); // walk left
-        //this.player.flipX = true; // flip the sprite to the left
+        this.player.flipX = false; // flip the sprite to the left
     }
     else if (this.cursors.right.isDown)
     {
-        this.player.body.setVelocityX(200);
-        this.player.anims.play('right', true);
-        //this.player.flipX = false; // use the original sprite looking to the right
+        this.player.body.setVelocityX(300);
+        this.player.anims.play('left', true);
+        this.player.flipX = true; // use the original sprite looking to the right
     } else {
         this.player.body.setVelocityX(0);
-        this.player.anims.play('idle', true);
+        this.player.anims.play('front', true);
     }
     // jump 
     if (this.cursors.up.isDown && this.player.body.onFloor())
     {
-        this.player.body.setVelocityY(-500);        
+        this.player.body.setVelocityY(-500);   
+        this.player.anims.play('front', true);    
     }
 
-    //console.log('Current this.player pos ', this.player.x, this.player.y);
+    // // Check for reaching endPoint object
+    // if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 9 ) {
+    //     console.log('Reached endPoint, loading next level');
+    //     this.scene.stop("level3");
+    //     this.scene.start("mainScene");
+    // }
 
-    // Check for reaching endPoint object
-    if ( this.player.x >= this.endPoint3.x && this.player.y >= this.endPoint3.y ) {
-        console.log('Reached End, game over');
-        //this.cameras.main.shake(500);
-        this.time.delayedCall(1000,function() {
-            this.scene.stop("level3");
-            this.scene.start("level4");
-        },[], this);
-    }
     
 }
 
 
+// hitalien(player, sprite){
+//     console.log("hitalien");
+       
+//     sprite.disableBody (true, true);
+//     // this.bgmusicSnd.loop = false
+//     // this.bgmusicSnd.stop();
+//     // this.hitSnd.play();
+//     this.time.delayedCall(500,function() {
+//     this.meatCount = 0
+//     this.scene.start('faillevel2');
+//     },[], this);
+    
+       
+//     return false;
+//     }
+
+collectcandy(player,tile) {
+    this.candy++;
+    console.log('Collect Candy', this.candy);
+    this.candyLayer.removeTileAt(tile.x, tile.y);
+    return false;
+}
+    
+    hitalien(player, sprite) {
+        //bombs.disableBody(true, true);
+        sprite.disableBody(true, true);
+        this.liveCount -= 1;
+        console.log('Hit alien, deduct heart, balance is',this.liveCount);
+    
+        // Default is 3 lives
+        if ( this.liveCount === 2) {
+            // this.explodeSnd.play();
+            this.cameras.main.shake(100);
+            this.heart3.setVisible(false);
+        } else if ( this.liveCount === 1) {
+            // this.explodeSnd.play();
+            this.cameras.main.shake(100);
+            this.heart2.setVisible(false);
+        } else if ( this.liveCount === 0) {
+            // this.explodeSnd.play();
+            this.cameras.main.shake(500);
+            this.heart1.setVisible(false);
+            this.isDead = true;
+        }
+    
+        // No more lives, shake screen and restart the game
+        if ( this.isDead ) {
+        console.log("Player is dead!!!")
+        // delay 1 sec
+        this.time.delayedCall(2000,function() {
+            // Reset counter before a restart
+            this.isDead = false;
+            this.liveCount = 3;
+            this.scene.restart();
+        },[], this);
+        }
+    
+    }
+    
 }
