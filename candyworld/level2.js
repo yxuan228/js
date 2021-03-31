@@ -6,6 +6,7 @@ class level2 extends Phaser.Scene {
         super({ key: 'level2' });
         this.candy = 0
         this.liveCount = 3
+        this.candyCount = 0;
 
     }
 
@@ -150,6 +151,23 @@ this.physics.add.collider(this.pillarsLayer, this.alien4);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    // this text will show the score
+    this.candyText = this.add.text(650, 50, this.candyCount, {
+        fontSize: '30px',
+        fill: '#221C48'
+        });
+
+    // fix the text to the camera
+    this.candyText.setScrollFactor(0);
+    this.candyText.visible = true;
+
+    this.anims.create({
+    key: this.player,
+    frames: [{key: this.player, frame: this.player}],
+    frameRate: 10,
+    });
+
+
   // set bounds so the camera won't go outside the game world
   this.cameras.main.setBounds(0, 0, this.map2.widthInPixels, this.map2.heightInPixels);
   // make the camera follow the this.player
@@ -227,6 +245,8 @@ collectcandy(player,tile) {
     this.candy++;
     console.log('Collect Candy', this.candy);
     this.candyLayer.removeTileAt(tile.x, tile.y);
+    this.candyCount += 1;
+    this.candyText.setText(this.candyCount);
     return false;
 }
     
