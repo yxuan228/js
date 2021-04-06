@@ -23,6 +23,10 @@ preload() {
 
     this.load.atlas('enemy','assets/alien.png', 'assets/alien.json' ); 
 
+    // alien position
+    var alien1 = map.findObject("objectLayer", obj => obj.name === "alien1");
+    var alien2 = map.findObject("objectLayer", obj => obj.name === "alien2");
+
 }
 
 create() {
@@ -89,6 +93,18 @@ repeat: -1
 
 this.time.addEvent({ delay: 1000, callback: this.moveRightLeft1, callbackScope: this, loop: false });
 this.time.addEvent({ delay: 1000, callback: this.moveRightLeft2, callbackScope: this, loop: false });
+
+//  alien
+this.alien = this.physics.add.group();
+
+this.alien.create(alien1.x, alien1.y,'alien_eye').setScale(0.8);
+this.alien.create(alien2.x, alien2.y, 'alien_eye').setScale(0.8);
+
+this.physics.add.collider(this.shelfLayer, this.cat);
+this.physics.add.overlap(this.player, this.alien, this.hitalien, null, this );
+this.alien.children.iterate(cat => {
+   alien.play('alien_eye');
+ })
 
 this.alien1 = this.physics.add.sprite(550, 350, 'enemy').setScale(0.8).play('alien_eye');
 this.alien2 = this.physics.add.sprite(900, 800, 'enemy').setScale(0.8).play('alien_eye');
@@ -216,12 +232,12 @@ update() {
         this.player.anims.play('front', true);    
     }
 
-    // // Check for reaching endPoint object
-    // if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 9 ) {
-    //     console.log('Reached endPoint, loading next level');
-    //     this.scene.stop("level3");
-    //     this.scene.start("mainScene");
-    // }
+    // Check for reaching endPoint object
+    if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 9 ) {
+        console.log('Reached endPoint, loading next level');
+        this.scene.stop("level3");
+        this.scene.start("mainScene");
+    }
 
     
 }

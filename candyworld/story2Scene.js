@@ -22,9 +22,9 @@ class story2Scene extends Phaser.Scene {
         var spaceDown = this.input.keyboard.addKey('SPACE');
         
         spaceDown.on('down', function(){
-        console.log("Spacebar pressed, goto level1");
+        console.log("Spacebar pressed, goto story3Scene");
         this.scene.stop("story2Scene");
-        this.scene.start("level1");
+        this.scene.start("story3Scene");
         }, this );
 
     }
