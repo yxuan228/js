@@ -39,6 +39,7 @@ create() {
 
     this.bgmusicSnd = this.sound.add('bgmusic', {volume: 0.1});
     this.bgmusicSnd.play();
+
     
     this.bgmusicSnd.loop = true;
 
