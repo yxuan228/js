@@ -5,8 +5,7 @@ class level1 extends Phaser.Scene {
     {
         super({ key: 'level1' });
         this.candy = 0
-        this.candyCount = 0;
-        
+        this.candyCount = 0;  
     }
 
 preload() {
@@ -20,6 +19,11 @@ preload() {
 
     // this.load.image('heart','assets/heart.png' );
 
+    // mp3
+    this.load.audio('collect','assets/collectcandy.mp3');
+    this.load.audio('bgmusic','assets/bgm.mp3');
+    this.load.audio('hit','assets/enemy.mp3');
+
 }
 
 create() {
@@ -28,6 +32,15 @@ create() {
     
     // Must match tileSets name
     let Tiles = this.map.addTilesetImage('tiles', 'tiles');
+
+    this.collectSnd = this.sound.add('collect');
+    this.hitSnd = this.sound.add('hit');
+    this.bgmusicSnd = this.sound.add('bgmusic');
+
+    this.bgmusicSnd = this.sound.add('bgmusic', {volume: 0.1});
+    this.bgmusicSnd.play();
+    
+    this.bgmusicSnd.loop = true;
 
     // create the ground layer
     this.backgroundLayer = this.map.createDynamicLayer('backgroundLayer', Tiles, 0, 0);
@@ -39,13 +52,7 @@ create() {
     // Set starting and ending position using name
     this.startPoint = this.map.findObject('exitobject', obj => obj.name === 'startPoint');
     this.endPoint = this.map.findObject('exitobject', obj => obj.name === 'endPoint');
-
-    // this.player = this.physics.add.sprite(this.startPoint.x, this.startPoint.y, 'player');
-    // this.player.setScale(1);
-    //     this.player.setCollideWorldBounds(true);
-
-    //     window.player = this.player
-
+\
     console.log( this.pillarsLayer.width, this.pillarsLayer.height );
 
     // create the player sprite    
@@ -75,12 +82,8 @@ create() {
     // this.heart2 = this.add.image(100,530,'heart').setScrollFactor(0);
     // this.Heart3 = this.add.image(150,530,'heart').setScrollFactor(0);
 
-    
-
-
     //   collect candy
     this.candyLayer.setTileIndexCallback(12, this.collectcandy, this);
-
 
     this.anims.create({
         key:'left',
@@ -131,7 +134,6 @@ create() {
     frameRate: 10,
     });
 
-
   // set bounds so the camera won't go outside the game world
   this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
   // make the camera follow the this.player
@@ -142,37 +144,17 @@ create() {
 
 }
 
-
-      
-// remove candy
-// collectcandy(player, Tiles) {
-//     console.log('candy', Tiles.index );
-//     this.candyLayer.removeTileAt(tile.x, tile.y); // remove the item
-//     return false;
-//     }
     collectcandy(player,tile) {
         this.candy++;
         console.log('Collect Candy', this.candy);
         this.candyLayer.removeTileAt(tile.x, tile.y);
         this.candyCount += 1;
+        this.collectSnd.play();
         this.candyText.setText(this.candyCount);
         return false;
     }
 
-    // collectSapling(player, sprite){
-    //     console.log("Sapling collected");
-    //     this.score = this.score + 1 ;
-    //     this.collectSnd.play();
-    //     this.saplingText.setText(this.score);
-    //     sprite.disableBody (true, true);
-        
-    //     return false;
-    //     }
-  
-
 update() {
-
-
 
     if (this.cursors.left.isDown)
     {
@@ -199,21 +181,10 @@ update() {
     // Check for reaching endPoint object
     if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 5 ) {
         console.log('Reached endPoint, loading next level');
+        this.bgmusicSnd.stop();
         this.scene.stop("level1");
         this.scene.start("level2");
     }
-
-    
-
-    // // Check for reaching endPoint object
-    // if ( this.player.x >= 2210 && this.player.y >= 40 && this.candy > 1 ) {
-    //     console.log('Reached End, level1');
-    //     // window.music1.stop();
-    //     //this.cameras.main.shake(500);
-    //     this.time.delayedCall(1000,function() {
-    //      this.scene.start("level2");
-    //     },[], this);
-    //     }
 
     // if ( this.liveCount === 2) {
     //     this.heart3.setVisible(true);

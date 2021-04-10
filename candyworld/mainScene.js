@@ -24,7 +24,7 @@ class mainScene extends Phaser.Scene {
         var key2 = this.input.keyboard.addKey(50);
         var key3 = this.input.keyboard.addKey(51);
         var key4 = this.input.keyboard.addKey(52);
-        // var key5 = this.input.keyboard.addKey(53);
+        var key5 = this.input.keyboard.addKey(53);
         // var key6 = this.input.keyboard.addKey(54);
 
 

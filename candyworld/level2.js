@@ -7,7 +7,6 @@ class level2 extends Phaser.Scene {
         this.candy = 0
         this.liveCount = 3
         this.candyCount = 0;
-
     }
 
 preload() {
@@ -21,9 +20,12 @@ preload() {
 
     this.load.image('heart','assets/heart.png' );
 
-    this.load.atlas('enemy','assets/alien.png', 'assets/alien.json' );
-
-    // this.load.atlas('robot', 'assets/robot.png', 'assets/robot.json');  
+    this.load.atlas('enemy','assets/alien.png', 'assets/alien.json' ); 
+    
+    // mp3
+    this.load.audio('collect','assets/collectcandy.mp3');
+    this.load.audio('bgmusic','assets/bgm.mp3');
+    this.load.audio('hit','assets/enemy.mp3');
 
 }
 
@@ -33,6 +35,15 @@ create() {
     
     // Must match tileSets name
     let Tiles2 = this.map2.addTilesetImage('tiles2', 'tiles2');
+
+    this.collectSnd = this.sound.add('collect');
+    this.hitSnd = this.sound.add('hit');
+    this.bgmusicSnd = this.sound.add('bgmusic');
+
+    this.bgmusicSnd = this.sound.add('bgmusic', {volume: 0.1});
+    this.bgmusicSnd.play();
+    
+    this.bgmusicSnd.loop = true;
 
     // create the ground layer
     this.backgroundLayer = this.map2.createDynamicLayer('backgroundLayer', Tiles2, 0, 0);
@@ -54,8 +65,7 @@ create() {
     // small fix to our this.player images, we resize the physics body object slightly
     this.player.setCollideWorldBounds(true); // don't go out of the map  
 
-    // Set this.player to starting position
-    //this.player.setPosition(this.startPoint.x, this.startPoint.y);  
+    // Set this.player to starting position 
     this.player.setPosition(0, 0);  
 
     // set the boundaries of our game world
@@ -108,13 +118,8 @@ this.physics.add.collider(this.pillarsLayer, this.alien2);
 this.physics.add.collider(this.pillarsLayer, this.alien3);
 this.physics.add.collider(this.pillarsLayer, this.alien4);
 
-
-    
-
-
     //   collect candy
     this.candyLayer.setTileIndexCallback(12, this.collectcandy, this);
-
 
     this.anims.create({
         key:'left',
@@ -147,8 +152,6 @@ this.physics.add.collider(this.pillarsLayer, this.alien4);
         repeat: -1
     });
 
-    
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // this text will show the score
@@ -167,7 +170,6 @@ this.physics.add.collider(this.pillarsLayer, this.alien4);
     frameRate: 10,
     });
 
-
   // set bounds so the camera won't go outside the game world
   this.cameras.main.setBounds(0, 0, this.map2.widthInPixels, this.map2.heightInPixels);
   // make the camera follow the this.player
@@ -178,19 +180,7 @@ this.physics.add.collider(this.pillarsLayer, this.alien4);
 
 }
 
-
-      
-// remove candy
-// collectcandy(player, Tiles) {
-//     console.log('candy', Tiles.index );
-//     this.candyLayer.removeTileAt(tile.x, tile.y); // remove the item
-//     return false;
-//     }
-   
-
 update() {
-
-
 
     if (this.cursors.left.isDown)
     {
@@ -217,35 +207,19 @@ update() {
     // Check for reaching endPoint object
     if ( this.player.x >= this.endPoint.x && this.player.y >= this.endPoint.y && this.candy > 7 ) {
         console.log('Reached endPoint, loading next level');
+        this.bgmusicSnd.stop();
         this.scene.stop("level2");
         this.scene.start("level3");
     }
-
     
 }
-
-
-// hitalien(player, sprite){
-//     console.log("hitalien");
-       
-//     sprite.disableBody (true, true);
-//     // this.bgmusicSnd.loop = false
-//     // this.bgmusicSnd.stop();
-//     // this.hitSnd.play();
-//     this.time.delayedCall(500,function() {
-//     this.meatCount = 0
-//     this.scene.start('faillevel2');
-//     },[], this);
-    
-       
-//     return false;
-//     }
 
 collectcandy(player,tile) {
     this.candy++;
     console.log('Collect Candy', this.candy);
     this.candyLayer.removeTileAt(tile.x, tile.y);
     this.candyCount += 1;
+    this.collectSnd.play();
     this.candyText.setText(this.candyCount);
     return false;
 }
@@ -253,7 +227,11 @@ collectcandy(player,tile) {
     hitalien(player, sprite) {
         //bombs.disableBody(true, true);
         sprite.disableBody(true, true);
+        // this.bgmusicSnd.loop = false
+        // this.bgmusicSnd.stop();
+        // this.hitSnd.play()
         this.liveCount -= 1;
+        this.hitSnd.play();
         console.log('Hit alien, deduct heart, balance is',this.liveCount);
     
         // Default is 3 lives

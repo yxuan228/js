@@ -79,9 +79,79 @@
          "width":40,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":7,
+         "name":"exitobject",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"startPoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":93.9393939393939,
+                 "y":424.242424242424
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"endPoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2400,
+                 "y":36.3636363636364
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":8,
+         "name":"objectLayer",
+         "objects":[
+                {
+                 "height":0,
+                 "id":4,
+                 "name":"alien1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":800,
+                 "y":424.242424242424
+                }, 
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"alien2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1633.33333333333,
+                 "y":615.151515151515
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":7,
- "nextobjectid":1,
+ "nextlayerid":9,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"2021.02.15",
