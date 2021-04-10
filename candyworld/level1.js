@@ -5,7 +5,7 @@ class level1 extends Phaser.Scene {
     {
         super({ key: 'level1' });
         this.candy = 0
-        this.candyCount = 0;  
+        this.candyCount = 0;
     }
 
 preload() {
@@ -19,7 +19,7 @@ preload() {
 
     // this.load.image('heart','assets/heart.png' );
 
-    // mp3
+    //mp3
     this.load.audio('collect','assets/collectcandy.mp3');
     this.load.audio('bgmusic','assets/bgm.mp3');
     this.load.audio('hit','assets/enemy.mp3');
@@ -52,7 +52,13 @@ create() {
     // Set starting and ending position using name
     this.startPoint = this.map.findObject('exitobject', obj => obj.name === 'startPoint');
     this.endPoint = this.map.findObject('exitobject', obj => obj.name === 'endPoint');
-\
+
+    // this.player = this.physics.add.sprite(this.startPoint.x, this.startPoint.y, 'player');
+    // this.player.setScale(1);
+    //     this.player.setCollideWorldBounds(true);
+
+    //     window.player = this.player
+
     console.log( this.pillarsLayer.width, this.pillarsLayer.height );
 
     // create the player sprite    
@@ -84,6 +90,7 @@ create() {
 
     //   collect candy
     this.candyLayer.setTileIndexCallback(12, this.collectcandy, this);
+
 
     this.anims.create({
         key:'left',
@@ -134,6 +141,7 @@ create() {
     frameRate: 10,
     });
 
+
   // set bounds so the camera won't go outside the game world
   this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
   // make the camera follow the this.player
@@ -155,6 +163,8 @@ create() {
     }
 
 update() {
+
+
 
     if (this.cursors.left.isDown)
     {
