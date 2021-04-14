@@ -10,7 +10,7 @@ let config = {
             gravity: {
                 y: 300
             },
-            debug: true
+            debug: false
         }
     },
     //scene: [mainScene, main2Scene, storyScene, story2Scene, level1]
